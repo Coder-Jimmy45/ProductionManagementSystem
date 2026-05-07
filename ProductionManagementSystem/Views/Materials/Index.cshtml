@@ -1,0 +1,55 @@
+﻿@model IEnumerable<ProductionManagementSystem.Models.Material>
+
+@{
+    ViewData["Title"] = "Materials";
+}
+
+<h1 class="mb-4 text-primary">Materials List</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Add Material</a>
+</p>
+
+<table class="table table-bordered table-hover shadow">
+    <thead class="table-dark">
+        <tr>
+            <th>Material Name</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+            <th>Min Stock</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            var rowClass = item.Quantity < item.MinStock ? "table-danger" : "";
+
+            <tr class="@rowClass">
+                <td>@item.MaterialName</td>
+                <td>@item.Quantity</td>
+                <td>@item.Unit</td>
+                <td>@item.MinStock</td>
+
+                <td>
+                    @if (item.Quantity < item.MinStock)
+                    {
+                        <span class="badge bg-danger">Low Stock</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-success">Available</span>
+                    }
+                </td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
